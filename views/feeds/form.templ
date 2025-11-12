@@ -1,0 +1,65 @@
+package feeds
+
+import "github.com/rezbow/rssagg/models"
+import "net/http"
+
+const (
+	InputNameTitle = "title"
+)
+
+type FeedForm struct {
+	id     int
+	title  string
+	Errors map[string]string
+}
+
+func (f *FeedForm) SetId(n int) {
+	f.id = n
+}
+
+func (f *FeedForm) Valid() bool {
+	if len(f.title) == 0 {
+		f.Errors[InputNameTitle] = "must not be empty"
+	}
+	return len(f.Errors) == 0
+}
+
+func (f *FeedForm) ToFeed() *models.Feed {
+	return &models.Feed{
+		Title: f.title,
+	}
+}
+
+func FormFromRequest(r *http.Request) *FeedForm {
+	r.ParseForm()
+	return &FeedForm{
+		title:  r.PostForm.Get(InputNameTitle),
+		Errors: make(map[string]string),
+	}
+}
+
+func NewFormFromFeed(feed *models.Feed) *FeedForm {
+	return &FeedForm{
+		id:     feed.ID,
+		title:  feed.Title,
+		Errors: make(map[string]string),
+	}
+}
+
+func NewFeedForm() *FeedForm {
+	return &FeedForm{
+		Errors: make(map[string]string),
+	}
+}
+
+templ Form(form *FeedForm) {
+	<form action="/feeds" method="post">
+		<label>
+			Feed title:
+			<input type="text" name={ InputNameTitle } value={ form.title } placeholder="Feed Title"/>
+			<span>{ form.Errors[InputNameTitle] }</span>
+		</label>
+		<button>Save</button>
+	</form>
+	<a href="/feeds">Back</a>
+}

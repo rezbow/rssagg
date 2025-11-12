@@ -1,0 +1,14 @@
+package feeds
+
+import "github.com/rezbow/rssagg/models"
+import "fmt"
+
+templ Feeds(feeds []models.Feed) {
+	<ul>
+		for _, feed := range feeds {
+			<li><a href={ fmt.Sprintf("/feeds/%d", feed.ID) }>{ feed.Title } </a> </li>
+			<br/>
+		}
+	</ul>
+	<a href="/feeds/new">New feed</a>
+}

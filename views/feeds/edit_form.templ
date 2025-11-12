@@ -1,0 +1,16 @@
+package feeds
+
+import "fmt"
+
+templ EditForm(form *FeedForm) {
+	<form action={ fmt.Sprintf("/feeds/%d/edit", form.id) } method="post">
+		<input type="hidden" value={ form.id } name="id"/>
+		<label>
+			Feed title:
+			<input type="text" name={ InputNameTitle } value={ form.title } placeholder="Feed Title"/>
+			<span>{ form.Errors[InputNameTitle] }</span>
+		</label>
+		<button>Save</button>
+	</form>
+	<a href={ fmt.Sprintf("/feeds/%d", form.id) }>Back</a>
+}

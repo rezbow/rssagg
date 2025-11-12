@@ -1,0 +1,10 @@
+package feeds
+
+import "github.com/rezbow/rssagg/models"
+import "fmt"
+
+templ Feed(feed *models.Feed) {
+	<h1>{ feed.Title }</h1>
+	<a href="/feeds">Back</a>
+	<a href={ fmt.Sprintf("/feeds/%d/edit", feed.ID) }>Edit</a>
+}
